@@ -1,22 +1,22 @@
-name: Build, Test and Publish
+name: CI - Testes
 
 on:
   push:
     branches:
-      - '*'  # Executa para qualquer branch
+      - '*'
   pull_request:
     branches:
-      - '*'  # Executa para qualquer PR
+      - '*'
 
 jobs:
-  build-test-publish:
+  run-tests:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Configurar .NET
+      - name: Setup do .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.x'
@@ -27,14 +27,5 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Testes
-        run: dotnet test --no-restore --verbosity normal
-
-      - name: Publicar
-        run: dotnet publish --configuration Release --output ./publish
-
-      - name: Upload do artefato
-        uses: actions/upload-artifact@v2
-        with:
-          name: publish
-          path: ./publish
+      - name: Rodar testes
+        run: dotnet test --configuration Release --no-build --verbosity normal
