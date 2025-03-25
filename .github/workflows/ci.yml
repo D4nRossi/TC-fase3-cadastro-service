@@ -13,19 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout do código
+      - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: 🛠️ Setup .NET
+      - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      - name: 📦 Restaurar pacotes do projeto de teste
+      - name: Restaurar pacotes do projeto de teste
         run: dotnet restore CadastroService.Tests/CadastroService.Tests.csproj
 
-      - name: 🧪 Build dos testes
+      - name: Build dos testes
         run: dotnet build CadastroService.Tests/CadastroService.Tests.csproj --configuration Release
 
-      - name: 🧪 Executar testes
+      - name: Executar testes
         run: dotnet test CadastroService.Tests/CadastroService.Tests.csproj --no-build --verbosity normal
