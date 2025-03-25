@@ -3,21 +3,22 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - '*'  # Todas as branches
+      - '*'  # Trigger para todas as branchesss
   pull_request:
     branches:
-      - '*'  # Todas as branches
+      - '*'  # Trigger para todas as branches
 
 jobs:
-  # ----------- CI (Build + Test + Artifact) -----------
+  # ----------- CI -----------
+
   ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '8.x'
 
@@ -34,22 +35,23 @@ jobs:
         run: dotnet publish -c Release -o ./publish
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: publish
           path: ./publish
 
-  # ----------- CD (Main only) -----------
+  # ----------- CD -----------
+
   cd:
     runs-on: ubuntu-latest
     needs: ci
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'  # Apenas na branch main
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '8.x'
 
@@ -58,5 +60,5 @@ jobs:
 
       - name: Simulate deploy to local machine
         run: |
-          mkdir -p ./Deploy
+          mkdir -p ./Deploy  # Cria a pasta Deploy se não existir
           cp -r ./publish/* ./Deploy/
