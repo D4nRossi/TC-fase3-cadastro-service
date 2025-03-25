@@ -39,8 +39,9 @@ jobs:
             break
           done
 
-      - name: ☁️ Upload do Artefato
-        uses: actions/upload-artifact@v3
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3.1.3
         with:
           name: publish
           path: ./publish
+
